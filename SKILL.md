@@ -1,11 +1,11 @@
 ---
 name: xflows-bridge
-description: "Cross-chain bridge operations using the xflows CLI (Wanchain XFlows). Use when the user wants to: (1) create or manage crypto wallets for cross-chain use, (2) query supported chains, tokens, pairs, bridges, or DEXes, (3) get cross-chain swap quotes and fee estimates, (4) send cross-chain transactions between EVM chains, (5) track cross-chain transaction status and completion. Triggers on: cross-chain, bridge, swap tokens between chains, xflows, Wanchain, WanBridge, QUiX, move/transfer tokens from Ethereum/BSC/Polygon/Arbitrum/Optimism/Avalanche/Wanchain to another chain, bridge ETH/BNB/USDC/USDT."
+description: "Cross-chain bridge operations using the xflows CLI (Wanchain XFlows). Use when the user wants to: (1) create or manage crypto wallets for cross-chain use, (2) query supported chains, tokens, pairs, bridges, or DEXes, (3) get cross-chain swap quotes and fee estimates, (4) send cross-chain transactions between EVM chains, (5) track cross-chain transaction status and completion, (6) send native tokens (ETH/BNB/WAN) on the same chain, (7) send ERC20 tokens on the same chain. Triggers on: cross-chain, bridge, swap tokens between chains, xflows, Wanchain, WanBridge, QUiX, move/transfer tokens from Ethereum/BSC/Polygon/Arbitrum/Optimism/Avalanche/Wanchain to another chain, bridge ETH/BNB/USDC/USDT, transfer ETH, send tokens, ERC20 transfer."
 ---
 
 # XFlows Cross-Chain Bridge
 
-Operate the `xflows` CLI to perform cross-chain bridge transactions via the Wanchain XFlows protocol.
+Operate the `xflows` CLI to perform cross-chain bridge transactions via the Wanchain XFlows protocol, as well as same-chain native token and ERC20 token transfers.
 
 ## Prerequisites
 
@@ -70,6 +70,24 @@ xflows send \
   [--bridge wanbridge|quix] [--slippage 0.01] [--dry-run] [--gas-limit <n>] [--rpc <url>]
 ```
 
+### Transfer (Same-Chain Native Token)
+
+```bash
+xflows transfer --wallet <name> --chain-id <id> --to <addr> --amount <amount> \
+  [--password <pw>] [--rpc <url>] [--gas-limit <n>] [--dry-run]
+```
+
+### Transfer Token (Same-Chain ERC20)
+
+```bash
+xflows transfer-token --wallet <name> --chain-id <id> \
+  --token <addr> --to <addr> --amount <amount> \
+  [--decimals <n>] [--password <pw>] [--rpc <url>] [--gas-limit <n>] [--dry-run]
+```
+
+- Auto-detects token decimals and symbol from the contract (or use `--decimals` to override)
+- Checks token balance before sending
+
 ### Track Status
 
 ```bash
@@ -100,7 +118,7 @@ xflows status \
 
 ### Encrypted Wallets
 
-When a wallet was created with `--encrypt`, every command that uses the private key (`send`, `wallet show`, `wallet balance`) requires `--password <pw>`.
+When a wallet was created with `--encrypt`, every command that uses the private key (`send`, `transfer`, `transfer-token`, `wallet show`, `wallet balance`) requires `--password <pw>`.
 
 ### Wanchain Gas Rule
 
@@ -139,6 +157,30 @@ xflows send --wallet alice --from-chain 1 --to-chain 56 \
   --from-token 0x0000000000000000000000000000000000000000 \
   --to-token 0x0000000000000000000000000000000000000000 \
   --to-address 0xRecipient --amount 0.1
+```
+
+### Same-Chain Native Transfer
+
+```bash
+# Send 0.1 ETH on Ethereum
+xflows transfer --wallet alice --chain-id 1 --to 0xRecipient --amount 0.1
+
+# Dry run first
+xflows transfer --wallet alice --chain-id 1 --to 0xRecipient --amount 0.1 --dry-run
+```
+
+### Same-Chain ERC20 Transfer
+
+```bash
+# Send 100 USDC on Ethereum (auto-detect decimals)
+xflows transfer-token --wallet alice --chain-id 1 \
+  --token 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 \
+  --to 0xRecipient --amount 100
+
+# Specify decimals manually
+xflows transfer-token --wallet alice --chain-id 1 \
+  --token 0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48 \
+  --to 0xRecipient --amount 100 --decimals 6
 ```
 
 ### Poll Until Complete

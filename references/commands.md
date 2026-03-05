@@ -126,6 +126,46 @@ Build, sign, and broadcast a cross-chain transaction.
 
 The `--from-address` is automatically set to the wallet's address.
 
+## transfer
+
+Send native tokens (ETH/BNB/WAN/etc.) on the same chain. This is a simple same-chain transfer, not a cross-chain operation.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--wallet <name>` | Yes | Wallet name for signing |
+| `--chain-id <id>` | Yes | Chain ID to send on |
+| `--to <address>` | Yes | Recipient address |
+| `--amount <amount>` | Yes | Amount to send (human-readable, e.g., `0.1`) |
+| `--password <pw>` | No | Password for encrypted wallet |
+| `--rpc <url>` | No | Override default RPC endpoint |
+| `--gas-limit <limit>` | No | Custom gas limit |
+| `--dry-run` | No | Preview without sending |
+
+**Process:** Load wallet -> Build tx -> Sign & Send -> Wait for receipt.
+
+Supports Wanchain gas price enforcement (chainId 888).
+
+## transfer-token
+
+Send ERC20 tokens on the same chain. Auto-detects token decimals and symbol from the contract.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--wallet <name>` | Yes | Wallet name for signing |
+| `--chain-id <id>` | Yes | Chain ID to send on |
+| `--token <address>` | Yes | ERC20 token contract address |
+| `--to <address>` | Yes | Recipient address |
+| `--amount <amount>` | Yes | Amount to send (human-readable, e.g., `100`) |
+| `--decimals <n>` | No | Token decimals (auto-detected from contract if omitted) |
+| `--password <pw>` | No | Password for encrypted wallet |
+| `--rpc <url>` | No | Override default RPC endpoint |
+| `--gas-limit <limit>` | No | Custom gas limit |
+| `--dry-run` | No | Preview without sending |
+
+**Process:** Load wallet -> Read token decimals/symbol -> Check balance -> Send transfer() -> Wait for receipt.
+
+Supports Wanchain gas price enforcement (chainId 888).
+
 ## status
 
 Check cross-chain transaction status.

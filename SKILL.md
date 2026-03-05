@@ -34,6 +34,7 @@ xflows wallet create --name <n> --private-key 0x...                # import key
 xflows wallet list                                                 # list all
 xflows wallet show --name <n> [--password <pw>]                    # show key
 xflows wallet balance --name <n> --chain-id <id> [--password <pw>] # balance
+xflows wallet token-balance --name <n> --chain-id <id> --token <addr> [--decimals <n>] [--password <pw>] [--rpc <url>] # ERC20 balance
 xflows wallet delete --name <n> --force                            # delete
 ```
 

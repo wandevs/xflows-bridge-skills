@@ -35,6 +35,19 @@ Check native token balance on a chain.
 | `--password <pw>` | No | Password for encrypted wallets |
 | `--rpc <url>` | No | Custom RPC URL |
 
+## wallet token-balance
+
+Check ERC20 token balance on a specific chain. Auto-detects token decimals and symbol from the contract.
+
+| Flag | Required | Description |
+|------|----------|-------------|
+| `--name <name>` | Yes | Wallet name |
+| `--chain-id <id>` | Yes | Chain ID to check balance on |
+| `--token <address>` | Yes | ERC20 token contract address |
+| `--decimals <n>` | No | Token decimals (auto-detected from contract if omitted) |
+| `--password <pw>` | No | Password for encrypted wallets |
+| `--rpc <url>` | No | Custom RPC URL |
+
 ## wallet delete
 
 | Flag | Required | Description |
